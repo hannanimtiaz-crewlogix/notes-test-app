@@ -12,6 +12,7 @@ beforeEach(function () {
 
 let token;
 let note_id;
+let user_id;
 
 describe("Notes test", () => {
   it("should log in", (done) => {
@@ -21,6 +22,7 @@ describe("Notes test", () => {
       .end((err, res) => {
         expect(res.body.status).to.be.a.string("success");
         token = res.body.token;
+        user_id = res.body.user._id;
         done();
       });
   });
@@ -31,7 +33,7 @@ describe("Notes test", () => {
       .post("/create-note")
       .set("Authorization", `Bearer ${token}`)
       .send({
-        user_id: "61bb15bbabe5912f1328558c",
+        user_id: user_id,
         title: "This is a mocha title",
         description: "This is a mocha test note",
       })
@@ -47,7 +49,7 @@ describe("Notes test", () => {
       .post("/get-note")
       .set("Authorization", `Bearer ${token}`)
       .send({
-        user_id: "61bb15bbabe5912f1328558c",
+        user_id: user_id,
         _id: note_id,
       })
       .end((err, res) => {
